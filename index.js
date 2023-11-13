@@ -225,8 +225,8 @@ app.post('/api/notes', (request, response) => {
         noteBody: body.noteBody,
         noteType: body.noteType,
         noteStatus: body.noteStatus,
-        noteDate: body.noteDate,
-        noteHour: body.noteDate
+        noteInitialDate: body.noteInitialDate,
+        noteFinalDate: body.noteFinalDate
     })
 
     newNote.save().then(savedNote => {
@@ -244,8 +244,8 @@ app.put('/api/notes/:id', (request, response, next) => {
         noteBody: body.noteBody,
         noteType: body.noteType,
         noteStatus: body.noteStatus,
-        noteDate: body.noteDate,
-        noteHour: body.noteDate
+        noteInitialDate: body.noteInitialDate,
+        noteFinalDate: body.noteFinalDate
     }
 
     Note.findByIdAndUpdate(id, newNoteInfo, { new: true })

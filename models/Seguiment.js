@@ -7,8 +7,8 @@ const noteSchema = new Schema({
     noteBody: String,
     noteType: String,
     noteStatus: String,
-    noteDate: Date,
-    noteHour: Date
+    noteInitialDate: Date,
+    noteFinalDate: Date
 })
 
 noteSchema.set('toJSON', {
