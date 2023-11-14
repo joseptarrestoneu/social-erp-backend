@@ -5,18 +5,19 @@ const userSchema = new Schema({
     userName: String,
     userFirstName: String,
     userLastName: String,
+    userDateBirth: Date,
     userDNI: String,
+    userGender: String,
+    userAddress: String,
+    userCP: String,
+    userTypeAddress: String,
+    userAddressNumber: Number,
+    userAddressStair: String,
     userEmail: String,
+    userTelephon: String,
     userDate: Date,
-    userState: Boolean
-})
-
-userSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
+    userState: Boolean,
+}, { timestamps: true })
 
 const User = model('User', userSchema)
 

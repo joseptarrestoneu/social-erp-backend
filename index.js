@@ -8,6 +8,7 @@ const app = express()
 const Note = require('./models/Seguiment')
 const User = require('./models/User')
 const Professional = require('./models/Professional')
+const Seguiment = require('./models/SeguimentType')
 
 app.use(express.json())
 app.use(cors())
@@ -67,8 +68,16 @@ app.post('/api/users', (request, response) => {
         userName: body.userName,
         userFirstName: body.userFirstName,
         userLastName: body.userLastName,
+        userDateBirth: body.userDateBirth,
         userDNI: body.userDNI,
+        userGender: body.userGender,
+        userAddress: body.userAddress,
+        userCP: body.userCP,
+        userTypeAddress: body.userTypeAddress,
+        userAddressNumber: body.userAddressNumber,
+        userAddressStair: body.userAddressStair,
         userEmail: body.userEmail,
+        userTelephon: body.userTelephon,
         userDate: body.userDate,
         userState: body.userState
     })
@@ -86,8 +95,16 @@ app.post('/api/users', (request, response) => {
         userName: body.userName,
         userFirstName: body.userFirstName,
         userLastName: body.userLastName,
+        userDateBirth: body.userDateBirth,
         userDNI: body.userDNI,
+        userGender: body.userGender,
+        userAddress: body.userAddress,
+        userCP: body.userCP,
+        userTypeAddress: body.userTypeAddress,
+        userAddressNumber: body.userAddressNumber,
+        userAddressStair: body.userAddressStair,
         userEmail: body.userEmail,
+        userTelephon: body.userTelephon,
         userDate: body.userDate,
         userState: body.userState
     }
@@ -144,6 +161,7 @@ app.post('/api/professionals', (request, response) => {
         professionalFirstName: body.professionalFirstName,
         professionalLastName: body.professionalLastName,
         professionalDNI: body.professionalDNI,
+        professionalRol: body.professionalRol,
         professionalUser: body.professionalUser,
         professionalPassword: body.professionalPassword,
         professionalEmail: body.professionalEmail,
@@ -165,6 +183,7 @@ app.put('/api/professionals/:id', (request, response, next) => {
         professionalFirstName: body.professionalFirstName,
         professionalLastName: body.professionalLastName,
         professionalDNI: body.professionalDNI,
+        professionalRol: body.professionalRol,
         professionalUser: body.professionalUser,
         professionalPassword: body.professionalPassword,
         professionalEmail: body.professionalEmail,
@@ -181,10 +200,12 @@ app.put('/api/professionals/:id', (request, response, next) => {
 
 // Seguiments
 app.get('/api/notes', (request, response) => {
-    Note.find({}).then(notes => {
+    Note.find({}).populate('professionalId')
+    .then(notes => {
         response.json(notes)
     })
 })
+
 
 app.get('/api/notes/:id', (request, response, next) => {
     const { id } = request.params;
@@ -249,6 +270,78 @@ app.put('/api/notes/:id', (request, response, next) => {
     }
 
     Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
+        .then(result => {
+            response.json(result)
+        })
+
+})
+
+// Tipus Seguiments 
+app.get('/api/seguiments', (request, response) => {
+    Seguiment.find({}).then(notes => {
+        response.json(notes)
+    })
+})
+
+app.get('/api/seguiments/:id', (request, response, next) => {
+    const { id } = request.params;
+    Seguiment.findById(id).then(seguiment => {
+        if (seguiment) {
+            return response.json(seguiment)
+        } else {
+            response.status(404).end()
+        }
+    }).catch(err => {
+        next(err)
+    })
+})
+
+app.delete('/api/seguiments/:id', (request, response, next) => {
+    const { id } = request.params;
+
+    Seguiment.findByIdAndDelete(id).then(result => {
+        response.status(204).end()
+    }).catch(err => {
+        next(err)
+    })
+
+})
+
+app.post('/api/seguiments', (request, response) => {
+    const body = request.body
+       
+    if (!body.seguimentName) {
+        return response.status(400).json({
+            error: "seguiment body missing"
+        })
+    }
+    
+    const newSeguiment = new Seguiment({
+        seguimentId: body.seguimentId,
+        seguimentName: body.seguimentName,
+        seguimentPrice: body.seguimentPrice,
+        seguimentDate: body.seguimentDate,
+        seguimentState: body.seguimentState
+    })
+
+    newSeguiment.save().then(savedNote => {
+        response.json(savedNote)
+    })
+})
+
+app.put('/api/seguiments/:id', (request, response, next) => {
+    const { id } = request.params;
+    const body = request.body
+    
+    const newSeguimentInfo = {
+        seguimentId: body.seguimentId,
+        seguimentName: body.seguimentName,
+        seguimentPrice: body.seguimentPrice,
+        seguimentDate: body.seguimentDate,
+        seguimentState: body.seguimentState
+    }
+
+    Seguiment.findByIdAndUpdate(id, newSeguimentInfo, { new: true })
         .then(result => {
             response.json(result)
         })

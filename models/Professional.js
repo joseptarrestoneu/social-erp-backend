@@ -6,19 +6,13 @@ const professionalSchema = new Schema({
     professionalFirstName: String,
     professionalLastName: String,
     professionalDNI: String,
+    professionalRol: String,
     professionalEmail: String,
     professionalUser: String,
     professionalPassword: String,
     professionalDate: Date,
     professionalState: Boolean
-})
-
-professionalSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
+}, { timestamps: true })
 
 const Professional = model('Professional', professionalSchema)
 

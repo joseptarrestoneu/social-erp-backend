@@ -3,20 +3,19 @@ const { model, Schema } = mongoose
 
 const noteSchema = new Schema({
     userId: String,
-    professionalId: String,
+    professionalId: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Professional' 
+    },
     noteBody: String,
-    noteType: String,
+    noteType: { 
+        type: Schema.Types.ObjectId, 
+        ref: "Seguiment" 
+    },
     noteStatus: String,
     noteInitialDate: Date,
     noteFinalDate: Date
-})
-
-noteSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
+}, { timestamps: true })
 
 const Note = model('Note', noteSchema)
 
