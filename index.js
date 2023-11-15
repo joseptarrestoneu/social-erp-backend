@@ -200,7 +200,7 @@ app.put('/api/professionals/:id', (request, response, next) => {
 
 // Seguiments
 app.get('/api/notes', (request, response) => {
-    Note.find({}).populate('professionalId')
+    Note.find({}).populate('professionalId').populate('userId').populate('noteType')
     .then(notes => {
         response.json(notes)
     })
