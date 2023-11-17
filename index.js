@@ -234,11 +234,11 @@ app.delete('/api/notes/:id', (request, response, next) => {
 app.post('/api/notes', (request, response) => {
     const body = request.body
        
-    if (!body.noteBody) {
-        return response.status(400).json({
-            error: "note body missing"
-        })
-    }
+    // if (!body.userId || !body.professionalId) {
+    //     return response.status(400).json({
+    //         error: "note user and professional missing"
+    //     })
+    // }
     
     const newNote = new Note({
         userId: body.userId,
@@ -249,6 +249,9 @@ app.post('/api/notes', (request, response) => {
         noteInitialDate: body.noteInitialDate,
         noteFinalDate: body.noteFinalDate
     })
+
+    console.log(newNote);
+    
 
     newNote.save().then(savedNote => {
         response.json(savedNote)
