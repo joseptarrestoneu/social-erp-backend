@@ -9,6 +9,7 @@ const Note = require('./models/Seguiment')
 const User = require('./models/User')
 const Professional = require('./models/Professional')
 const Seguiment = require('./models/SeguimentType')
+const routes = require('./routes/index')
 
 app.use(express.json())
 app.use(cors())
@@ -351,6 +352,8 @@ app.put('/api/seguiments/:id', (request, response, next) => {
 
 })
 
+app.use(routes)
+
 // Middleware
 app.use((error, request, response, next) => {
     console.error(error);
@@ -360,10 +363,9 @@ app.use((error, request, response, next) => {
         response.status(500).end()
     }
   })
-      
+
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Servei running on port ${PORT}`);
 })
-
