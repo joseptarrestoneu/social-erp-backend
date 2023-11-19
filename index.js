@@ -9,7 +9,7 @@ const Note = require('./models/Seguiment')
 const User = require('./models/User')
 const Professional = require('./models/Professional')
 const Seguiment = require('./models/SeguimentType')
-const routes = require('./routes/index')
+// const routes = require('./routes/index')
 
 app.use(express.json())
 app.use(cors())
@@ -210,7 +210,8 @@ app.get('/api/notes', (request, response) => {
 
 app.get('/api/notes/:id', (request, response, next) => {
     const { id } = request.params;
-    Note.findById(id).then(note => {
+    Note.findById(id).populate('noteType').populate('professionalId').populate('userId')
+    .then(note => {
         if (note) {
             return response.json(note)
         } else {
@@ -224,7 +225,8 @@ app.get('/api/notes/:id', (request, response, next) => {
 app.delete('/api/notes/:id', (request, response, next) => {
     const { id } = request.params;
 
-    Note.findByIdAndDelete(id).then(result => {
+    Note.findByIdAndDelete(id)
+    .then(result => {
         response.status(204).end()
     }).catch(err => {
         next(err)
@@ -352,7 +354,7 @@ app.put('/api/seguiments/:id', (request, response, next) => {
 
 })
 
-app.use(routes)
+// app.use(routes)
 
 // Middleware
 app.use((error, request, response, next) => {
